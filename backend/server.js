@@ -9,7 +9,20 @@ const orderRoutes = require('./routes/orders')
 
 const app = express()
 const PORT = process.env.PORT || 3001
+const { MongoClient, ObjectId } = require("mongodb");
+require("dotenv").config();
 
+const mongoUri = process.env.MONGODB_URI;
+let db;
+
+MongoClient.connect(mongoUri)
+  .then(client => {
+    console.log("✅ Connected to MongoDB Atlas");
+    db = client.db(); // gunakan database dari URI
+  })
+  .catch(err => {
+    console.error("❌ MongoDB connection failed:", err.message);
+  });
 // Middleware
 app.use(cors())
 app.use(express.json())
